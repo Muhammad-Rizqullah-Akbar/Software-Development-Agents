@@ -1,9 +1,10 @@
 // Project overview with Hermes chat (spec sections 69, 74, 113-114)
 import { createSignal, Show, For } from "solid-js";
 import { useParams } from "@solidjs/router";
-import { useProject, useTasks, useRequirements, useSessions, useExecutions, hermes, workspaceId } from "../../stores";
+import { useProject, useTasks, useRequirements, useSessions, useExecutions, useWorkFields, useAssignments, useAgents, hermes, workspaceId } from "../../stores";
 import { MetricCard, StatusBadge, Tag, TimelineProgress } from "../../components/shared";
-import { IconAgent, IconChat, IconSend, IconRuns, IconProjects, IconClock, IconBolt } from "../../components/shared/icons";
+import { IconAgent, IconChat, IconSend, IconRuns, IconProjects, IconClock, IconBolt, IconShield, IconCheck } from "../../components/shared/icons";
+import { dbList } from "../../adapters/mock/db";
 
 export function ProjectOverview() {
   const params = useParams<{ projectId: string }>();
@@ -37,6 +38,29 @@ export function ProjectOverview() {
     running: executions().filter((e: any) => e.status === "running").length,
   };
 
+  // Work fields + participants
+  const workFields = useWorkFields(params.projectId);
+  const assignments = useAssignments(params.projectId);
+  const agents = useAgents();
+  const fieldAgents = (fieldId: string) => {
+    const parts = dbList("workFieldParticipants").filter((p: any) => p.workFieldId === fieldId);
+    return parts.map((p: any) => {
+      const asg = assignments().find((a: any) => a.agentAssignmentId === p.agentAssignmentId);
+      const ag = agents().find((a: any) => a.agentId === asg?.agentId);
+      return { name: ag?.name, subContext: p.subContext, agentId: ag?.agentId };
+    });
+  };
+
+  const workflow = [
+    { name: "Define", state: "done" },
+    { name: "Design", state: "done" },
+    { name: "Plan", state: "done" },
+    { name: "Build", state: "cur" },
+    { name: "Review", state: "todo" },
+    { name: "Verify", state: "todo" },
+    { name: "Release", state: "todo" },
+  ];
+
   return (
     <div>
       <div class="grid grid-4" style={{ "margin-bottom": "var(--sp-6)" }}>
@@ -44,6 +68,45 @@ export function ProjectOverview() {
         <MetricCard label="Requirements" value={String(counts.requirements)} icon={IconClock} />
         <MetricCard label="Tasks" value={String(counts.tasks)} icon={IconRuns} />
         <MetricCard label="Running Executions" value={String(counts.running)} icon={IconBolt} />
+      </div>
+
+      {/* Workflow progress (spec 186) */}
+      <div class="card card-pad" style={{ "margin-bottom": "var(--sp-6)" }}>
+        <div style={{ display: "flex", "align-items": "center", "margin-bottom": "var(--sp-4)" }}>
+          <h3 style={{ flex: 1, margin: 0 }}>Workflow — Feature Development</h3>
+          <Tag>OAuth Authentication</Tag>
+        </div>
+        <TimelineProgress value={57} />
+        <div class="tl-labels">
+          {workflow.map((w) => (
+            <span class={`lbl ${w.state}`}>
+              {w.state === "done" && <IconCheck class="ico-xs" />}
+              {w.state === "cur" && <IconBolt class="ico-xs" />}
+              {w.name}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Work field collaboration (spec 165-166, 187) */}
+      <div style={{ "margin-bottom": "var(--sp-6)" }}>
+        <h3 style={{ "margin-bottom": "var(--sp-3)" }}>Work Fields</h3>
+        <div class="grid grid-2">
+          {workFields().map((wf: any) => (
+            <div class="card">
+              <div class="card-head"><h3>{wf.name}</h3><Tag>{wf.subContexts.join(" · ")}</Tag></div>
+              <div>
+                {fieldAgents(wf.workFieldId).map((p: any) => (
+                  <div class="activity-item" style={{ display: "flex", "align-items": "center", gap: "var(--sp-3)" }}>
+                    <IconAgent class="ico-md" style={{ color: "var(--accent)" }} />
+                    <b style={{ flex: 1 }}>{p.name}</b>
+                    <StatusBadge status={p.agentId === "a-ravix" ? "waiting" : "in_progress"} label={p.subContext} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div class="card" style={{ "margin-bottom": "var(--sp-6)" }}>

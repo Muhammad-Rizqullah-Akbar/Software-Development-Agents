@@ -155,3 +155,58 @@ export function useProject(projectId: string) {
   });
   return get;
 }
+
+export function useOwners() {
+  const list = createMemo(() => { void dbVersion(); return dbList("agentOwners"); });
+  return list;
+}
+
+export function useAgentsByOwner(ownerId: string) {
+  const list = createMemo(() => { void dbVersion(); return dbList("agents").filter((a) => a.ownerId === ownerId); });
+  return list;
+}
+
+export function useWorkFields(projectId: string) {
+  const list = createMemo(() => { void dbVersion(); return dbList("workFields").filter((w) => w.projectId === projectId); });
+  return list;
+}
+
+export function useFindings(projectId: string) {
+  const list = createMemo(() => { void dbVersion(); return dbList("findings").filter((f) => f.projectId === projectId); });
+  return list;
+}
+
+export function useWorkReports(projectId: string) {
+  const list = createMemo(() => { void dbVersion(); return dbList("workReports").filter((r) => r.projectId === projectId); });
+  return list;
+}
+
+export function useHandoffs(projectId: string) {
+  const list = createMemo(() => { void dbVersion(); return dbList("handoffs").filter((h) => h.projectId === projectId); });
+  return list;
+}
+
+export function useSandboxes(projectId?: string) {
+  const list = createMemo(() => {
+    void dbVersion();
+    let items = dbList("sandboxes");
+    if (projectId) items = items.filter((s) => s.projectId === projectId);
+    return items;
+  });
+  return list;
+}
+
+export function useExecutionEvents(executionId?: string) {
+  const list = createMemo(() => {
+    void dbVersion();
+    let items = dbList("executionEvents");
+    if (executionId) items = items.filter((e) => e.executionId === executionId);
+    return items;
+  });
+  return list;
+}
+
+export function useVerifications(projectId: string) {
+  const list = createMemo(() => { void dbVersion(); return dbList("verifications").filter((v) => v.projectId === projectId); });
+  return list;
+}

@@ -20,6 +20,7 @@ import { ProjectTeam } from "../pages/project/ProjectTeam";
 import { ProjectAgents } from "../pages/project/ProjectAgents";
 import { ProjectReleases } from "../pages/project/ProjectReleases";
 import { ProjectActivity } from "../pages/project/ProjectActivity";
+import { ProjectWorkView } from "../pages/project/ProjectWorkView";
 
 export function AppRoutes() {
   return (
@@ -34,6 +35,7 @@ export function AppRoutes() {
         <Route path="/agents" component={ProjectAgents} />
         <Route path="/releases" component={ProjectReleases} />
         <Route path="/activity" component={ProjectActivity} />
+        <Route path="/work/:executionId" component={ProjectWorkView} />
       </Route>
       <Route path="/agents" component={AgentsPage} />
       <Route path="/skills" component={SkillsPage} />

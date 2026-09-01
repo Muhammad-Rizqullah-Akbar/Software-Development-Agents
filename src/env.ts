@@ -25,7 +25,7 @@ export interface AppConfig {
 // Ganti di sini (atau via env) saat backend nyata tersedia.
 export const appConfig: AppConfig = {
   workspaceId: "ws-main",
-  currentUserId: "u-eqii",
+  currentUserId: "u-rizqullah",
   backend: "mock",
   gateway: "mock",
   hermes: "mock",

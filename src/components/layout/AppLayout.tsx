@@ -64,8 +64,8 @@ export function Layout(props: { children?: any }) {
         <div class="sb-foot">
           <div class="sb-avatar"><IconShield size={15} /></div>
           <div style={{ "min-width": 0 }}>
-            <div class="sb-user-name">Eqii</div>
-            <div class="sb-user-role">admin</div>
+            <div class="sb-user-name">Rizqullah</div>
+            <div class="sb-user-role">AI Systems & Product</div>
           </div>
         </div>
       </aside>
