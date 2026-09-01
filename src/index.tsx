@@ -16,7 +16,7 @@ function AppErrorBoundary(props: { children: any }) {
           <button
             class="btn btn-primary"
             onClick={() => {
-              localStorage.removeItem("software-development-agents.db.v2");
+              localStorage.removeItem("software-development-agents.db.v3");
               reset();
               location.reload();
             }}

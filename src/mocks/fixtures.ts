@@ -10,7 +10,7 @@ const t = (h: number) => new Date(new Date(now).getTime() - h * 3600_000).toISOS
 
 export function buildFixtures(): DBShape {
   return {
-    version: 2,
+    version: 3,
     users: [
       { userId: "u-rizqullah", email: "rizqullah@demo.com", displayName: "Rizqullah Akbar", workspaceId: "ws-main", createdAt: t(48) },
       { userId: "u-farid", email: "farid@demo.com", displayName: "Maestro Farid W", workspaceId: "ws-main", createdAt: t(48) },
@@ -187,6 +187,15 @@ export function buildFixtures(): DBShape {
       { skillId: "sk-tdd", workspaceId: "ws-main", name: "Test-Driven Development", type: "process", category: "Process", version: "v1", description: "Red-green-refactor", riskLevel: "low" },
       { skillId: "sk-verify", workspaceId: "ws-main", name: "Verification Before Completion", type: "process", category: "Process", version: "v1", description: "Verify before done", riskLevel: "medium" },
       { skillId: "sk-review", workspaceId: "ws-main", name: "Requesting Code Review", type: "process", category: "Process", version: "v1", description: "Review workflow", riskLevel: "medium" },
+      // Global-only skills — tidak terikat agent manapun (partisi global)
+      { skillId: "sk-git-worktree", workspaceId: "ws-main", name: "Using Git Worktrees", type: "process", category: "Process", version: "v1", description: "Isolated worktrees", riskLevel: "low" },
+      { skillId: "sk-parallel-dispatch", workspaceId: "ws-main", name: "Parallel Agent Dispatch", type: "process", category: "Process", version: "v1", description: "Run agents in parallel", riskLevel: "medium" },
+      { skillId: "sk-debug", workspaceId: "ws-main", name: "Systematic Debugging", type: "process", category: "Process", version: "v1", description: "Diagnosis to fix", riskLevel: "low" },
+      { skillId: "sk-sql", workspaceId: "ws-main", name: "PostgreSQL / SQL", type: "capability", category: "Database", version: "v1", description: "Relational data modeling", riskLevel: "low" },
+      { skillId: "sk-docker", workspaceId: "ws-main", name: "Docker", type: "capability", category: "Infrastructure", version: "v1", description: "Containerization", riskLevel: "low" },
+      { skillId: "sk-web-research", workspaceId: "ws-main", name: "Web Research", type: "capability", category: "Research", version: "v1", description: "Evidence-based research", riskLevel: "low" },
+      { skillId: "sk-api-design", workspaceId: "ws-main", name: "REST API Design", type: "capability", category: "Backend", version: "v1", description: "Resource-oriented APIs", riskLevel: "low" },
+      { skillId: "sk-observability", workspaceId: "ws-main", name: "Observability", type: "capability", category: "Infrastructure", version: "v1", description: "Logs, metrics, tracing", riskLevel: "low" },
     ],
     agentSkills: [
       { agentSkillId: "ags-hf-1", agentId: "a-hermes-forge", skillId: "sk-fullstack" },

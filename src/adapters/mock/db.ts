@@ -2,7 +2,7 @@
 // This is the single source of truth for all mock repositories.
 // State persists across reloads. Never reset on reload.
 
-const STORAGE_KEY = "software-development-agents.db.v2";
+const STORAGE_KEY = "software-development-agents.db.v3";
 
 export interface DBShape {
   version: number;
@@ -208,7 +208,7 @@ export function ensureSeeded(seed: () => DBShape): void {
         return;
       }
     }
-    if (parsed.version !== 2) {
+    if (parsed.version !== 3) {
       saveDB(seed());
       return;
     }
