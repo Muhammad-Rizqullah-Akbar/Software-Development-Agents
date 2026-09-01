@@ -1,8 +1,8 @@
 // Home / Command center (spec sections 69, 133, 134)
 import { createSignal } from "solid-js";
-import { useProjects, useSessions, useExecutions, useApprovals, useNotifications } from "../../stores";
+import { useProjects, useSessions, useExecutions, useApprovals, useNotifications, useVerifications, useOwners } from "../../stores";
 import { MetricCard, PageHeader, StatusBadge, Tag } from "../../components/shared";
-import { IconProjects, IconAgent, IconRuns, IconClock, IconChat, IconSend } from "../../components/shared/icons";
+import { IconProjects, IconAgent, IconRuns, IconClock, IconChat, IconSend, IconShield, IconCheck, IconWarning } from "../../components/shared/icons";
 
 export function HomePage() {
   const projects = useProjects();
@@ -15,6 +15,9 @@ export function HomePage() {
 
   const runningExecs = () => executions().filter((e: any) => ["queued", "running"].includes(e.status)).length;
   const activeSessions = () => sessions().filter((s: any) => s.status === "active").length;
+  const verifications = useVerifications("p-console");
+  const verificationFailures = () => verifications().filter((v: any) => v.status === "failed").length;
+  const activeProjects = () => projects.list().filter((p: any) => p.status === "active").length;
 
   const ask = () => {
     if (!prompt().trim()) return;
@@ -44,10 +47,23 @@ export function HomePage() {
       )}
 
       <div class="grid grid-4" style={{ "margin-bottom": "var(--sp-6)" }}>
-        <MetricCard label="Active Projects" value={String(projects.list().filter((p: any) => p.status === "active").length)} sub="dari total projects" icon={IconProjects} />
-        <MetricCard label="Active Sessions" value={String(activeSessions())} icon={IconAgent} />
-        <MetricCard label="Running Executions" value={String(runningExecs())} icon={IconRuns} />
-        <MetricCard label="Pending Approvals" value={String(approvals().length)} tone="orange" icon={IconClock} />
+        <MetricCard label="Active Projects" value={String(activeProjects())} sub="dari total projects" icon={IconProjects} />
+        <MetricCard label="Agent Sessions" value={String(activeSessions())} sub="running" icon={IconAgent} />
+        <MetricCard label="Executions" value={String(runningExecs())} sub="running" icon={IconRuns} />
+        <MetricCard label="Verification Failures" value={String(verificationFailures())} sub="perlu perhatian" tone="orange" icon={IconWarning} />
+      </div>
+
+      {/* Spotlight: current active project (spec 184-185) */}
+      <div class="card card-pad" style={{ "margin-bottom": "var(--sp-6)", "border-left": "3px solid var(--accent)" }}>
+        <div style={{ display: "flex", "align-items": "center", gap: "var(--sp-4)" }}>
+          <div class="sb-avatar" style={{ background: "var(--accent)" }}><IconProjects size={20} /></div>
+          <div style={{ flex: 1 }}>
+            <div class="eyebrow">Active Workspace</div>
+            <b style={{ "font-size": "1.1rem" }}>Hermes Console</b>
+            <div style={{ "font-size": "0.82rem", color: "var(--ink-faint)" }}>Project Lead: Rizqullah Akbar · Phase: build</div>
+          </div>
+          <a href="/projects/p-console/board" class="btn btn-primary">Buka Project</a>
+        </div>
       </div>
 
       <div class="grid grid-2">

@@ -61,12 +61,83 @@ export interface ProjectMembership {
 }
 
 // ============ Agent ============
+export interface AgentOwner {
+  ownerId: ID;
+  workspaceId: ID;
+  displayName: string;
+  role: string;
+  focus: string[];
+}
+
 export interface Agent {
   agentId: ID;
   workspaceId: ID;
   name: string;
   description: string;
+  role: string;
+  ownerId: ID;
   currentVersionId?: ID;
+  createdAt: ISODateString;
+}
+
+// Work Field = kolaborasi multi-agent dalam satu area project
+export interface WorkField {
+  workFieldId: ID;
+  workspaceId: ID;
+  projectId: ID;
+  name: string;
+  subContexts: string[];
+  artifactIds: ID[];
+}
+
+export interface WorkFieldParticipant {
+  workFieldParticipantId: ID;
+  workFieldId: ID;
+  agentAssignmentId: ID;
+  subContext: string;
+}
+
+// Finding (hasil review/security) — canonical, link ke task/execution
+export interface Finding {
+  findingId: ID;
+  workspaceId: ID;
+  projectId: ID;
+  taskId?: ID;
+  executionId?: ID;
+  severity: ReviewFindingSeverity;
+  category: string;
+  file?: string;
+  issue: string;
+  status: "open" | "resolved";
+  resolution?: string;
+  createdAt: ISODateString;
+}
+
+// WorkReport — hasil agent yang bisa diakses dari task card
+export interface WorkReport {
+  reportId: ID;
+  workspaceId: ID;
+  projectId: ID;
+  taskId: ID;
+  agentId: ID;
+  summary: string;
+  changes: string[];
+  testsPassed?: number;
+  securityResolved?: number;
+  artifacts: string[];
+  recommendation: string;
+  createdAt: ISODateString;
+}
+
+// Handoff — transfer kerja antar agent dalam work field
+export interface Handoff {
+  handoffId: ID;
+  workspaceId: ID;
+  projectId: ID;
+  workFieldId: ID;
+  fromAgentId: ID;
+  toAgentId: ID;
+  message: string;
   createdAt: ISODateString;
 }
 

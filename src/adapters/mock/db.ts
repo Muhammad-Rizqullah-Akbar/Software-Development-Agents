@@ -2,7 +2,7 @@
 // This is the single source of truth for all mock repositories.
 // State persists across reloads. Never reset on reload.
 
-const STORAGE_KEY = "software-development-agents.db.v1";
+const STORAGE_KEY = "software-development-agents.db.v2";
 
 export interface DBShape {
   version: number;
@@ -14,9 +14,15 @@ export interface DBShape {
   memberships: any[];
   // agent
   agents: any[];
+  agentOwners: any[];
   agentVersions: any[];
   assignments: any[];
   sessions: any[];
+  workFields: any[];
+  workFieldParticipants: any[];
+  findings: any[];
+  workReports: any[];
+  handoffs: any[];
   // capability
   skills: any[];
   agentSkills: any[];
@@ -74,9 +80,15 @@ export const emptyDB = (): DBShape => ({
   projects: [],
   memberships: [],
   agents: [],
+  agentOwners: [],
   agentVersions: [],
   assignments: [],
   sessions: [],
+  workFields: [],
+  workFieldParticipants: [],
+  findings: [],
+  workReports: [],
+  handoffs: [],
   skills: [],
   agentSkills: [],
   souls: [],
@@ -123,7 +135,7 @@ function load(): DBShape {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return emptyDB();
     const parsed = JSON.parse(raw) as DBShape;
-    if (!parsed || parsed.version !== 1) return emptyDB();
+    if (!parsed || parsed.version !== 2) return emptyDB();
     // ensure all arrays exist
     const base = emptyDB();
     for (const key of Object.keys(base)) {
