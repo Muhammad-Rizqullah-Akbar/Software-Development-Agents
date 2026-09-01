@@ -2,6 +2,7 @@
 import { createSignal } from "solid-js";
 import { useProjects, useSessions, useExecutions, useApprovals, useNotifications } from "../../stores";
 import { MetricCard, PageHeader, StatusBadge, Tag } from "../../components/shared";
+import { IconProjects, IconAgent, IconRuns, IconClock, IconChat, IconSend } from "../../components/shared/icons";
 
 export function HomePage() {
   const projects = useProjects();
@@ -9,24 +10,44 @@ export function HomePage() {
   const executions = useExecutions();
   const approvals = useApprovals();
   const notifications = useNotifications();
+  const [prompt, setPrompt] = createSignal("");
+  const [reply, setReply] = createSignal<string | null>(null);
 
   const runningExecs = () => executions().filter((e: any) => ["queued", "running"].includes(e.status)).length;
   const activeSessions = () => sessions().filter((s: any) => s.status === "active").length;
 
+  const ask = () => {
+    if (!prompt().trim()) return;
+    setReply(`Hermes menerima instruksi: "${prompt()}". Sistem akan menghasilkan requirements, rencana, dan rekomendasi agent untuk project ini.`);
+    setPrompt("");
+  };
+
   return (
     <div>
-      <PageHeader eyebrow="Command Center" title="Software-Development-Agents" actions={
+      <PageHeader eyebrow="Command Center" title="Software-Development-Agents" icon={IconProjects} actions={
         <>
-          <input class="form-input" placeholder="Apa yang ingin kamu bangun?" style={{ width: "320px" }} />
-          <button class="btn btn-primary">Tanya Hermes</button>
+          <div class="search-inline">
+            <IconChat class="ico-md" />
+            <input class="form-input" placeholder="Apa yang ingin kamu bangun?" value={prompt()} onInput={(e) => setPrompt(e.currentTarget.value)} style={{ width: "320px" }} onKeyDown={(e) => e.key === "Enter" && ask()} />
+            <button class="btn btn-primary" onClick={ask}><IconSend class="ico-sm" /> Tanya Hermes</button>
+          </div>
         </>
       } />
 
+      {reply() && (
+        <div class="card card-pad" style={{ "margin-bottom": "var(--sp-6)", "border-left": "3px solid var(--accent)" }}>
+          <div style={{ display: "flex", gap: "var(--sp-3)" }}>
+            <IconAgent class="ico-lg" style={{ color: "var(--accent)" }} />
+            <div><b>Hermes</b><p style={{ "font-size": "0.88rem", color: "var(--ink-soft)", "margin-top": "var(--sp-1)" }}>{reply()}</p></div>
+          </div>
+        </div>
+      )}
+
       <div class="grid grid-4" style={{ "margin-bottom": "var(--sp-6)" }}>
-        <MetricCard label="Active Projects" value={String(projects.list().filter((p: any) => p.status === "active").length)} sub="dari total projects" />
-        <MetricCard label="Active Sessions" value={String(activeSessions())} />
-        <MetricCard label="Running Executions" value={String(runningExecs())} />
-        <MetricCard label="Pending Approvals" value={String(approvals().length)} tone="orange" />
+        <MetricCard label="Active Projects" value={String(projects.list().filter((p: any) => p.status === "active").length)} sub="dari total projects" icon={IconProjects} />
+        <MetricCard label="Active Sessions" value={String(activeSessions())} icon={IconAgent} />
+        <MetricCard label="Running Executions" value={String(runningExecs())} icon={IconRuns} />
+        <MetricCard label="Pending Approvals" value={String(approvals().length)} tone="orange" icon={IconClock} />
       </div>
 
       <div class="grid grid-2">

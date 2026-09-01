@@ -1,6 +1,7 @@
 // Governance (spec sections 62-65)
 import { dbList } from "../../adapters/mock/db";
 import { PageHeader, StatusBadge } from "../../components/shared";
+import { IconShield } from "../../components/shared/icons";
 
 export function GovernancePage() {
   const capabilities = dbList("capabilities") as any[];
@@ -8,7 +9,7 @@ export function GovernancePage() {
 
   return (
     <div>
-      <PageHeader eyebrow="Authorization" title="Governance" />
+      <PageHeader eyebrow="Authorization" title="Governance" icon={IconShield} />
 
       <div class="card" style={{ "margin-bottom": "var(--sp-6)" }}>
         <div class="card-head"><h3>Capabilities</h3></div>

@@ -3,6 +3,7 @@ import { createSignal, Show } from "solid-js";
 import { useParams } from "@solidjs/router";
 import { useReleases, services, workspaceId, bumpDB } from "../../stores";
 import { PageHeader, StatusBadge } from "../../components/shared";
+import { IconDeploy } from "../../components/shared/icons";
 import { dbList } from "../../adapters/mock/db";
 
 export function ProjectReleases() {
@@ -26,7 +27,7 @@ export function ProjectReleases() {
 
   return (
     <div>
-      <PageHeader eyebrow="Release Gates" title="Releases" />
+      <PageHeader eyebrow="Release Gates" title="Releases" icon={IconDeploy} />
       <div class="card">
         <table class="table">
           <thead><tr><th>Release</th><th>Version</th><th>Status</th><th>Gates</th><th></th></tr></thead>

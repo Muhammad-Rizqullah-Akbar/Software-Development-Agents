@@ -1,23 +1,25 @@
 // App layout: sidebar + topbar + content (spec section 66)
+// Restored interactive design: SVG icons, meaningful per item.
 import { createSignal } from "solid-js";
 import { A } from "@solidjs/router";
 import { useNotifications, useApprovals } from "../../stores";
+import { IconHome, IconProjects, IconRuns, IconActivity, IconAgent, IconSkill, IconSoul, IconShield, IconSettings, IconSearch } from "../shared/icons";
 
 const NAV = [
   { group: "Workspace", items: [
-    { label: "Home", href: "/", key: "home" },
-    { label: "Projects", href: "/projects", key: "projects" },
-    { label: "Runs", href: "/runs", key: "runs" },
-    { label: "Activity", href: "/activity", key: "activity" },
+    { label: "Home", href: "/", icon: IconHome },
+    { label: "Projects", href: "/projects", icon: IconProjects },
+    { label: "Runs", href: "/runs", icon: IconRuns },
+    { label: "Activity", href: "/activity", icon: IconActivity },
   ]},
   { group: "Agents", items: [
-    { label: "Agents", href: "/agents", key: "agents" },
-    { label: "Skills", href: "/skills", key: "skills" },
-    { label: "SOUL", href: "/soul", key: "soul" },
+    { label: "Agents", href: "/agents", icon: IconAgent },
+    { label: "Skills", href: "/skills", icon: IconSkill },
+    { label: "SOUL", href: "/soul", icon: IconSoul },
   ]},
   { group: "Governance", items: [
-    { label: "Governance", href: "/governance", key: "governance" },
-    { label: "Settings", href: "/settings", key: "settings" },
+    { label: "Governance", href: "/governance", icon: IconShield },
+    { label: "Settings", href: "/settings", icon: IconSettings },
   ]},
 ];
 
@@ -32,31 +34,35 @@ export function Layout(props: { children?: any }) {
       <aside class={`sidebar ${compact() ? "compact" : ""}`}>
         <div class="sb-brand">
           <A href="/" class="sb-brand-inner" style={{ "text-decoration": "none", color: "inherit" }}>
-            <div class="sb-logo">S</div>
+            <div class="sb-logo"><IconShield size={18} /></div>
             <div>
               <div class="sb-title">Software-Dev</div>
               <div class="sb-sub">Agents</div>
             </div>
           </A>
           <button class="tb-toggle" onClick={() => setCompact((c) => !c)} title="Toggle (Ctrl+B)" style={{ width: "30px", height: "30px" }}>
-            <span class="mono" style={{ "font-size": "0.7rem" }}>«</span>
+            <IconSearch class="ico-sm" />
           </button>
         </div>
         <nav class="sb-nav">
           {NAV.map((g) => (
             <div>
               <div class="sb-group">{g.group}</div>
-              {g.items.map((it) => (
-                <A href={it.href} class="sb-item" activeClass="active" end>
-                  <span>{it.label}</span>
-                  {it.key === "activity" && attention() > 0 && <span class="attention-count">{attention()}</span>}
-                </A>
-              ))}
+              {g.items.map((it) => {
+                const I = it.icon;
+                return (
+                  <A href={it.href} class="sb-item" activeClass="active" end>
+                    <I class="ico-md" />
+                    <span>{it.label}</span>
+                    {it.href === "/activity" && attention() > 0 && <span class="attention-count">{attention()}</span>}
+                  </A>
+                );
+              })}
             </div>
           ))}
         </nav>
         <div class="sb-foot">
-          <div class="sb-avatar">E</div>
+          <div class="sb-avatar"><IconShield size={15} /></div>
           <div style={{ "min-width": 0 }}>
             <div class="sb-user-name">Eqii</div>
             <div class="sb-user-role">admin</div>

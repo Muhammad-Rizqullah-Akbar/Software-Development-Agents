@@ -1,8 +1,9 @@
 // Project overview with Hermes chat (spec sections 69, 74, 113-114)
 import { createSignal, Show, For } from "solid-js";
 import { useParams } from "@solidjs/router";
-import { useProject, useTasks, useRequirements, useSessions, useExecutions, hermes, repos, workspaceId } from "../../stores";
-import { MetricCard, StatusBadge, Tag } from "../../components/shared";
+import { useProject, useTasks, useRequirements, useSessions, useExecutions, hermes, workspaceId } from "../../stores";
+import { MetricCard, StatusBadge, Tag, TimelineProgress } from "../../components/shared";
+import { IconAgent, IconChat, IconSend, IconRuns, IconProjects, IconClock, IconBolt } from "../../components/shared/icons";
 
 export function ProjectOverview() {
   const params = useParams<{ projectId: string }>();
@@ -39,14 +40,14 @@ export function ProjectOverview() {
   return (
     <div>
       <div class="grid grid-4" style={{ "margin-bottom": "var(--sp-6)" }}>
-        <MetricCard label="Phase" value={project?.phase ?? "—"} sub="fase SDLC saat ini" />
-        <MetricCard label="Requirements" value={String(counts.requirements)} />
-        <MetricCard label="Tasks" value={String(counts.tasks)} />
-        <MetricCard label="Running Executions" value={String(counts.running)} />
+        <MetricCard label="Phase" value={project?.phase ?? "—"} sub="fase SDLC saat ini" icon={IconProjects} />
+        <MetricCard label="Requirements" value={String(counts.requirements)} icon={IconClock} />
+        <MetricCard label="Tasks" value={String(counts.tasks)} icon={IconRuns} />
+        <MetricCard label="Running Executions" value={String(counts.running)} icon={IconBolt} />
       </div>
 
       <div class="card" style={{ "margin-bottom": "var(--sp-6)" }}>
-        <div class="card-head"><h3>Hermes</h3><StatusBadge status="active" label="Terhubung" /></div>
+        <div class="card-head"><h3><IconAgent class="ico-md" style={{ "margin-right": "var(--sp-2)" }} /> Hermes</h3><StatusBadge status="active" label="Terhubung" /></div>
         <div style={{ display: "grid", "grid-template-columns": "1fr 1fr" }}>
           <div style={{ "border-right": "1px solid var(--line)" }}>
             <div class="messages" style={{ height: "300px" }}>

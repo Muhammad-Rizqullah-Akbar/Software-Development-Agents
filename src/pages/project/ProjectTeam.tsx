@@ -3,6 +3,7 @@ import { createSignal, Show } from "solid-js";
 import { useParams } from "@solidjs/router";
 import { useMembers, useAssignments, useAgents, services, workspaceId, bumpDB, currentUserId } from "../../stores";
 import { PageHeader, StatusBadge } from "../../components/shared";
+import { IconAgent } from "../../components/shared/icons";
 
 export function ProjectTeam() {
   const params = useParams<{ projectId: string }>();
@@ -31,7 +32,7 @@ export function ProjectTeam() {
 
   return (
     <div>
-      <PageHeader eyebrow="Kolaborasi" title="Team & Agents" actions={
+      <PageHeader eyebrow="Kolaborasi" title="Team & Agents" icon={IconAgent} actions={
         <button class="btn btn-primary" onClick={() => setShowModal(true)}>+ Request Agent</button>
       } />
 

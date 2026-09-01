@@ -3,6 +3,7 @@ import { createSignal, Show } from "solid-js";
 import { useParams } from "@solidjs/router";
 import { useAssignments, useSessions, useExecutions, services, workspaceId, bumpDB, useAgents } from "../../stores";
 import { PageHeader, StatusBadge } from "../../components/shared";
+import { IconAgent, IconBolt } from "../../components/shared/icons";
 
 export function ProjectAgents() {
   const params = useParams<{ projectId: string }>();
@@ -23,7 +24,7 @@ export function ProjectAgents() {
 
   return (
     <div>
-      <PageHeader eyebrow="Eksekusi" title="Project Agents" />
+      <PageHeader eyebrow="Eksekusi" title="Project Agents" icon={IconAgent} />
 
       <h3 style={{ "margin-bottom": "var(--sp-3)" }}>Assignments</h3>
       <div class="card" style={{ "margin-bottom": "var(--sp-6)" }}>

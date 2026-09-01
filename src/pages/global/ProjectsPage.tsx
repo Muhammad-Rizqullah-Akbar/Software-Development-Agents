@@ -1,7 +1,13 @@
 // Projects list (spec sections 68, 131)
 import { createSignal, Show, For } from "solid-js";
 import { useProjects, services, currentUserId, workspaceId, bumpDB } from "../../stores";
-import { PageHeader, StatusBadge, Tag } from "../../components/shared";
+import { PageHeader, StatusBadge, Tag, TimelineProgress } from "../../components/shared";
+import { IconProjects } from "../../components/shared/icons";
+
+// Mapping fase SDLC → perkiraan progress (presentasi, bukan invent domain)
+const phaseProgress: Record<string, number> = {
+  discover: 10, define: 20, design: 35, plan: 50, build: 65, review: 75, verify: 85, release: 95, operate: 100, learn: 100,
+};
 
 export function ProjectsPage() {
   const { list, query, setQuery } = useProjects();
@@ -22,7 +28,7 @@ export function ProjectsPage() {
 
   return (
     <div>
-      <PageHeader eyebrow="Workspace" title="Projects" actions={
+      <PageHeader eyebrow="Workspace" title="Projects" icon={IconProjects} actions={
         <button class="btn btn-primary" onClick={() => setShowModal(true)}>+ Buat Proyek</button>
       } />
 
@@ -43,6 +49,9 @@ export function ProjectsPage() {
                   <StatusBadge status={p.status} />
                 </div>
                 <p style={{ "font-size": "0.85rem", color: "var(--ink-soft)" }}>{p.description}</p>
+                <div style={{ "margin-top": "var(--sp-3)" }}>
+                  <TimelineProgress value={phaseProgress[p.phase] ?? 10} color={p.status === "completed" ? "teal" : "accent"} />
+                </div>
                 <div style={{ display: "flex", gap: "var(--sp-2)", "margin-top": "var(--sp-3)" }}>
                   <Tag>{p.phase}</Tag>
                 </div>

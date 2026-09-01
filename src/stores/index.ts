@@ -9,6 +9,7 @@ import { repositories, type RepositoryRegistry } from "../adapters/mock/reposito
 import { StateMachine } from "../domain/state-machines";
 import { Services } from "../services";
 import { MockHermesAdapter, MockModelGateway } from "../adapters";
+import { appConfig } from "../env";
 
 ensureSeeded(buildFixtures);
 
@@ -17,8 +18,9 @@ export const services = new Services(repositories, StateMachine);
 export const hermes = new MockHermesAdapter(repositories);
 export const modelGateway = new MockModelGateway(repositories);
 
-export const currentUserId = "u-eqii";
-export const workspaceId = "ws-main";
+// Identity dari environment config (bukan hardcoded di komponen)
+export const currentUserId = appConfig.currentUserId;
+export const workspaceId = appConfig.workspaceId;
 
 // Reactive domain state version — bump after any mutation so selectors recompute.
 const [dbVersion, setDbVersion] = createSignal(0);

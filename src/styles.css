@@ -807,3 +807,11 @@ button { font-family: inherit; }
 
 .project-card { transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s; cursor: pointer; }
 .project-card:hover { border-color: var(--accent); box-shadow: var(--shadow-2); transform: translateY(-1px); }
+
+.search-inline {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--ink-faint);
+}
+.search-inline .ico { color: var(--ink-faint); }

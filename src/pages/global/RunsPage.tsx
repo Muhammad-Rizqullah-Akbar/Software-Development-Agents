@@ -1,6 +1,7 @@
 // Global runs (Executions) page (spec section 76)
-import { useExecutions, useAgents, useSessions, repos } from "../../stores";
+import { useExecutions, useAgents, useSessions } from "../../stores";
 import { PageHeader, StatusBadge } from "../../components/shared";
+import { IconRuns } from "../../components/shared/icons";
 
 export function RunsPage() {
   const executions = useExecutions();
@@ -11,7 +12,7 @@ export function RunsPage() {
 
   return (
     <div>
-      <PageHeader eyebrow="Execution History" title="Runs" />
+      <PageHeader eyebrow="Execution History" title="Runs" icon={IconRuns} />
       <div class="card" style={{ overflow: "auto" }}>
         <table class="table">
           <thead><tr><th>Execution</th><th>Project</th><th>Agent</th><th>Task</th><th>Status</th><th>Input</th></tr></thead>

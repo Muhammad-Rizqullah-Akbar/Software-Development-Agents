@@ -1,7 +1,9 @@
 // Project activity (spec sections 64, 105)
 import { useParams } from "@solidjs/router";
 import { dbList } from "../../adapters/mock/db";
+import { eventLabel } from "../../domain/events";
 import { PageHeader } from "../../components/shared";
+import { IconActivity } from "../../components/shared/icons";
 
 export function ProjectActivity() {
   const params = useParams<{ projectId: string }>();
@@ -12,13 +14,13 @@ export function ProjectActivity() {
 
   return (
     <div>
-      <PageHeader eyebrow="Audit" title="Project Activity" />
+      <PageHeader eyebrow="Audit" title="Project Activity" icon={IconActivity} />
       <div class="card">
         {events.length === 0 && <div class="empty-state"><div class="eyebrow">Kosong</div><p>Belum ada aktivitas.</p></div>}
         {events.map((e: any) => (
           <div class="activity-item">
             <div style={{ flex: 1 }}>
-              <b>{e.action}</b>
+              <b>{eventLabel(e.action)}</b>
               <span class="mono" style={{ "font-size": "0.72rem", color: "var(--ink-faint)", "margin-left": "var(--sp-2)" }}>{e.resourceType}:{e.resourceId}</span>
             </div>
             <span class="mono" style={{ "font-size": "0.72rem", color: "var(--ink-faint)" }}>{e.occurredAt.slice(11, 19)}</span>

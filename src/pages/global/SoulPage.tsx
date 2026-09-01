@@ -3,6 +3,7 @@ import { createSignal } from "solid-js";
 import { useAgents } from "../../stores";
 import { dbList } from "../../adapters/mock/db";
 import { PageHeader, StatusBadge } from "../../components/shared";
+import { IconSoul } from "../../components/shared/icons";
 
 export function SoulPage() {
   const agents = useAgents();
@@ -11,7 +12,7 @@ export function SoulPage() {
 
   return (
     <div>
-      <PageHeader eyebrow="Behavioral Config" title="SOUL Lab" />
+      <PageHeader eyebrow="Behavioral Config" title="SOUL Lab" icon={IconSoul} />
       <div style={{ display: "flex", gap: "var(--sp-3)", "margin-bottom": "var(--sp-5)", "align-items": "center" }}>
         <label class="eyebrow">Agent</label>
         <select class="form-select" value={agentId()} onChange={(e) => setAgentId(e.currentTarget.value)}>

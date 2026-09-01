@@ -1,10 +1,13 @@
 // Project board with validated transitions (spec sections 73, 123)
 import { createSignal, Show } from "solid-js";
 import { useParams } from "@solidjs/router";
-import { useTasks, services, workspaceId, bumpDB, repos } from "../../stores";
-import { PageHeader, StatusBadge, Tag } from "../../components/shared";
+import { useTasks, services, workspaceId, bumpDB } from "../../stores";
+import { PageHeader, StatusBadge, TimelineProgress } from "../../components/shared";
+import { IconBoard } from "../../components/shared/icons";
+import type { TaskStatus } from "../../domain/enums";
 
-const COLUMNS = ["backlog", "ready", "in_progress", "blocked", "review", "verification", "done"];
+// Kolom board = nilai kanonik TaskStatus (bukan invent baru)
+const COLUMNS: TaskStatus[] = ["backlog", "ready", "in_progress", "blocked", "review", "verification", "done"];
 
 export function ProjectBoard() {
   const params = useParams<{ projectId: string }>();
@@ -25,7 +28,7 @@ export function ProjectBoard() {
 
   return (
     <div>
-      <PageHeader eyebrow="Kolaborasi" title="Board" />
+      <PageHeader eyebrow="Kolaborasi" title="Board" icon={IconBoard} />
       <div style={{ display: "grid", "grid-template-columns": "repeat(7,1fr)", gap: "var(--sp-3)", "align-items": "start", "min-width": "900px" }}>
         {COLUMNS.map((col) => {
           const colTasks = tasks().filter((t: any) => t.status === col);
@@ -36,7 +39,7 @@ export function ProjectBoard() {
                 <div class="card" style={{ padding: "var(--sp-3)", "margin-bottom": "var(--sp-2)" }}>
                   <b style={{ "font-size": "0.8rem" }}>{t.title}</b>
                   <div class="mono" style={{ "font-size": "0.7rem", color: "var(--ink-faint)" }}>{t.taskId}</div>
-                  {t.priority && <StatusBadge status={t.priority} />}
+                  <div style={{ "margin-top": "var(--sp-2)" }}>{t.priority && <StatusBadge status={t.priority} />}</div>
                   <div style={{ display: "flex", gap: "var(--sp-1)", "margin-top": "var(--sp-2)" }}>
                     {COLUMNS.filter((c) => c !== col).slice(0, 2).map((c) => (
                       <button class="btn btn-sm" onClick={() => move(t.taskId, c)} style={{ "font-size": "0.68rem", padding: "2px 6px" }}>{c}</button>

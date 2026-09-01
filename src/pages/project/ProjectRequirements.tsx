@@ -1,8 +1,9 @@
 // Project requirements with traceability (spec sections 70, 49)
 import { createSignal, Show } from "solid-js";
 import { useParams } from "@solidjs/router";
-import { useRequirements, repos, services, workspaceId, bumpDB, currentUserId } from "../../stores";
+import { useRequirements, services, workspaceId, bumpDB, currentUserId } from "../../stores";
 import { PageHeader, StatusBadge } from "../../components/shared";
+import { IconClock } from "../../components/shared/icons";
 import { dbList } from "../../adapters/mock/db";
 
 export function ProjectRequirements() {
@@ -23,7 +24,7 @@ export function ProjectRequirements() {
 
   return (
     <div>
-      <PageHeader eyebrow="Traceability" title="Requirements" actions={
+      <PageHeader eyebrow="Traceability" title="Requirements" icon={IconClock} actions={
         <button class="btn btn-primary" onClick={() => setShowModal(true)}>+ Requirement</button>
       } />
       <div class="card">

@@ -2,6 +2,7 @@
 import { useAgents } from "../../stores";
 import { dbList } from "../../adapters/mock/db";
 import { PageHeader, StatusBadge } from "../../components/shared";
+import { IconSettings, IconShield } from "../../components/shared/icons";
 
 export function SettingsPage() {
   const agents = useAgents();
@@ -10,7 +11,7 @@ export function SettingsPage() {
 
   return (
     <div>
-      <PageHeader eyebrow="Configuration" title="Settings" />
+      <PageHeader eyebrow="Configuration" title="Settings" icon={IconSettings} />
       <div class="grid grid-2">
         <div class="card card-pad">
           <h3>Model Gateway</h3>
