@@ -38,7 +38,7 @@ export function HomePage() {
       } />
 
       {reply() && (
-        <div class="card card-pad" style={{ "margin-bottom": "var(--sp-6)", "border-left": "3px solid var(--accent)" }}>
+        <div class="card card-pad" style={{ "margin-bottom": "var(--sp-6)" }}>
           <div style={{ display: "flex", gap: "var(--sp-3)" }}>
             <IconAgent class="ico-lg" style={{ color: "var(--accent)" }} />
             <div><b>Hermes</b><p style={{ "font-size": "0.88rem", color: "var(--ink-soft)", "margin-top": "var(--sp-1)" }}>{reply()}</p></div>
@@ -54,7 +54,7 @@ export function HomePage() {
       </div>
 
       {/* Spotlight: current active project (spec 184-185) */}
-      <div class="card card-pad" style={{ "margin-bottom": "var(--sp-6)", "border-left": "3px solid var(--accent)" }}>
+      <div class="card card-pad" style={{ "margin-bottom": "var(--sp-6)" }}>
         <div style={{ display: "flex", "align-items": "center", gap: "var(--sp-4)" }}>
           <div class="sb-avatar" style={{ background: "var(--accent)" }}><IconProjects size={20} /></div>
           <div style={{ flex: 1 }}>

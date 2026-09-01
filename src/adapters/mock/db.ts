@@ -191,10 +191,29 @@ export function dbList<K extends keyof DBShape>(table: K): any[] {
   return getDB()[table] as any[];
 }
 
-/** Seed fixtures on first load if the DB is empty/absent. */
+/** Seed fixtures on first load if the DB is empty/absent or malformed. */
 export function ensureSeeded(seed: () => DBShape): void {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (raw) return;
-  const db = seed();
-  saveDB(db);
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      saveDB(seed());
+      return;
+    }
+    const parsed = JSON.parse(raw) as DBShape;
+    // validate version + required arrays; reseed if mismatch/corrupt
+    const base = emptyDB();
+    for (const key of Object.keys(base)) {
+      if (!Array.isArray((parsed as any)[key])) {
+        saveDB(seed());
+        return;
+      }
+    }
+    if (parsed.version !== 2) {
+      saveDB(seed());
+      return;
+    }
+  } catch {
+    // localStorage corrupt — reseed fresh
+    saveDB(seed());
+  }
 }
