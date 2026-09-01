@@ -708,3 +708,102 @@ button { font-family: inherit; }
   font-size: 0.85rem;
 }
 .link:hover { text-decoration: underline; }
+
+/* ============================================================
+   SHARED COMPONENTS (spec-driven)
+   ============================================================ */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  white-space: nowrap;
+}
+.status-badge .sb-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status-badge.green { color: var(--teal); border-color: rgba(15,118,110,0.3); background: var(--teal-bg); }
+.status-badge.red { color: var(--red); border-color: rgba(179,38,30,0.3); background: var(--red-bg); }
+.status-badge.orange { color: var(--accent-deep); border-color: rgba(255,77,0,0.3); background: rgba(255,77,0,0.08); }
+.status-badge.gray { color: var(--ink-faint); }
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-5);
+}
+.filter-bar .tag { cursor: pointer; }
+
+.empty-state {
+  padding: var(--sp-7);
+  text-align: center;
+  color: var(--ink-faint);
+}
+.empty-state p { margin-top: var(--sp-2); }
+
+.toast {
+  position: fixed;
+  bottom: var(--sp-6);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #fff;
+  padding: var(--sp-3) var(--sp-5);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-3);
+  z-index: 200;
+  font-size: 0.88rem;
+  animation: slideUp 0.2s ease-out;
+}
+
+.attention-count {
+  margin-left: auto;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 999px;
+  min-width: 18px;
+  height: 18px;
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0 5px;
+}
+
+.proposal {
+  margin-top: var(--sp-3);
+  padding: var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--paper-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.project-switcher {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 220px;
+}
+
+.metric-card .val {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: var(--sp-1);
+}
+
+.project-card { transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s; cursor: pointer; }
+.project-card:hover { border-color: var(--accent); box-shadow: var(--shadow-2); transform: translateY(-1px); }

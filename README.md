@@ -1,38 +1,77 @@
 # Software Development Agents
 
-> ⚠️ **STATUS: MASIH DALAM TAHAP DEVELOPMENT — UI TESTING SAJA.**
-> Aplikasi ini belum siap untuk produksi. Saat ini hanya tahap eksplorasi & pengujian UI (UI testing).
+> ⚠️ **STATUS: MASIH DALAM TAHAP DEVELOPMENT — Frontend-Ready, Backend-Ready.**
+> Ini adalah implementasi **frontend lengkap** dari domain Software-Development-Agents, dengan mock infrastruktur yang persistent, kontrak data kanonik, state machine eksplisit, serta batas integrasi Hermes & 9router.
 
-Kontrol tower & kolaborasi multi-agent untuk ekosistem Hermes Agent. Platform ini dirancang untuk mengelola pipeline Software Development Lifecycle (SDLC) secara end-to-end — dari ide, PRD/BRD, desain, build, testing, sandbox security, hingga CI/CD deployment.
+Frontend dirancang **seolah-olah backend final sudah ada**. Lapisan eksekusi backend di-mock untuk sekarang. Saat backend nyata ditambahkan, tidak perlu rewrite arsitektur.
 
-## ✨ Fitur Utama (Dalam Pengembangan)
+## Arsitektur Berlapis
 
-- **Project Planner** — Alur SDLC bertahap (Define → Plan → Design → Build → Verify) dengan timeline progress.
-- **Agent Grid** — Melihat & mengelompokkan agent berdasarkan skill, workload, dan akurasi output.
-- **Skill Bank** — Katalog skill & framework yang terstruktur per kategori (Web, Mobile, Tools, Agent Persona).
-- **SOUL Lab** — Editor & A/B testing persona agent (SOUL.md).
-- **Board** — Kanban kolaborasi multi-agent (Jira-style) dengan routing berbasis skill.
-- **Chat Agents** — Komunikasi langsung dengan agent.
-- **Code Inspector** — Inspeksi kode project langsung di UI.
-- **Prototype Preview** — Live preview 3 mode (Desktop, Tablet, Mobile).
-- **CI/CD & Hosting Control** — Dashboard monitoring service & deployment.
+```text
+UI / Pages
+    ↓
+Application Services
+    ↓
+Domain Contracts
+    ↓
+Repository Interfaces
+    ↓
+Mock Implementations (localStorage)
+```
 
-## 🛠️ Tech Stack
+**Target migrasi masa depan:**
+```text
+Mock Hermes Adapter   →   Real Hermes Adapter
+Mock Model Gateway    →   NineRouterGatewayAdapter
+Mock Repositories     →   Real Repositories (PostgreSQL)
+```
 
-- **SolidJS** + **TypeScript** (`.tsx`)
-- **Vite** build tool
-- **CSS Design Tokens** (anti-AI-slop, ink & paper palette)
+## Struktur Repository
 
-## 🚀 Menjalankan Lokal
+```text
+src/
+  app/          — router & app entry
+  domain/       — models, enums, contracts, state-machines (kanonik)
+  services/     — application services (state transitions + audit)
+  repositories/ — repository interface contracts
+  adapters/
+    mock/       — mock db (localStorage) + mock repositories
+  stores/       — reactive domain state (single source of truth)
+  pages/
+    global/     — Home, Projects, Agents, Skills, SOUL, Runs, Activity, Governance, Settings
+    project/    — Project Overview, Requirements, Board, Team, Agents, Releases, Activity
+  components/
+    layout/     — AppLayout (sidebar + topbar)
+    shared/     — StatusBadge, MetricCard, PageHeader, DataTable, Tag, EmptyState
+  mocks/        — fixtures (8-12 projects, users, agents, tasks, dll)
+```
+
+## Konsep Kanonik
+
+- **Agent** ≠ **AgentAssignment** ≠ **AgentSession** ≠ **Execution**
+- **Workflow** (definisi) ≠ **WorkflowRun** (runtime)
+- **Skill** ≠ **Capability** ≠ **Permission** ≠ **Policy**
+- **Requirement** ↔ **Task** (many-to-many via traceability)
+- **Verification** ≠ **Evidence**
+- **Release** ≠ **Deployment**
+- **Gateway** ≠ **Model**; 9router adalah adapter, bukan primitif domain
+
+## Status Transisi Tervalidasi
+
+`StateMachine` mencegah transisi status ilegal. Contoh:
+- Task: `backlog → ready → in_progress → review → verification → done`
+- Execution: `queued → running → succeeded/failed`
+- Release: `draft → candidate → verification → approved → staging → production`
+
+## Menjalankan Lokal
 
 ```bash
 npm install
-npm run dev       # dev server di http://localhost:5173
-npm run build     # production build
+npm run dev      # http://localhost:5173
+npm run build    # production build
+npm run typecheck # npx tsc --noEmit
 ```
 
-## 📌 Catatan Pengembangan
+## Persistensi Mock
 
-- Repository ini **sengaja dibatasi** hanya berisi UI console (SolidJS).
-- Tools sourcing & backend berada di luar repo ini.
-- Semua fitur masih dalam tahap iterasi desain & UI testing, belum terintegrasi dengan backend Hermes sungguhan.
+State disimpan di `localStorage` (key `software-development-agents.db.v1`) dan **tidak direset saat reload**. State lintas halaman konsisten karena ada satu reactive store sebagai sumber kebenaran.
