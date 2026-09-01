@@ -186,7 +186,7 @@ button { font-family: inherit; }
 .preview-card { display: flex; flex-direction: column; gap: var(--sp-2); padding: var(--sp-5); border: 1px solid var(--line); border-radius: var(--r-md); }
 .preview-card .ico { color: var(--accent); }
 .preview-card span { font-size: .78rem; color: var(--ink-faint); }
-@media (max-width: 760px) { .chat-layout, .inspector-layout { grid-template-columns: 1fr; } .tb-search { display: none; } .content { padding: var(--sp-5) var(--sp-4); } .page-head { align-items: flex-start; flex-wrap: wrap; } .preview-stage { padding: var(--sp-3); } .preview-screen { padding: var(--sp-5); } }
+@media (max-width: 760px) { .chat-layout, .inspector-layout { grid-template-columns: 1fr; } .content { padding: var(--sp-5) var(--sp-4); } .page-head { align-items: flex-start; flex-wrap: wrap; } .preview-stage { padding: var(--sp-3); } .preview-screen { padding: var(--sp-5); } }
 
 .content {
   flex: 1;
@@ -363,24 +363,6 @@ button { font-family: inherit; }
 }
 
 .tb-spacer { flex: 1; }
-
-.tb-search {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  background: var(--paper-2);
-  border: 1px solid var(--line);
-  border-radius: var(--r-sm);
-  padding: 7px 12px;
-  min-width: 220px;
-  color: var(--ink-faint);
-  font-size: 0.88rem;
-}
-.tb-search kbd {
-  font-family: var(--font-mono); font-size: 0.68rem;
-  border: 1px solid var(--line-strong); border-radius: 4px;
-  padding: 0 4px; background: #fff; color: var(--ink-faint);
-}
 
 /* ============================================================
    BUTTONS

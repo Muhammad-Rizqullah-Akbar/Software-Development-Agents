@@ -1,9 +1,10 @@
 // App layout: sidebar + topbar + content (spec section 66)
 // Restored interactive design: SVG icons, meaningful per item.
-import { createSignal } from "solid-js";
+// Ctrl+B toggle sidebar. Tombol panah di samping logo (bukan search).
+import { createSignal, onMount, onCleanup } from "solid-js";
 import { A } from "@solidjs/router";
 import { useNotifications, useApprovals } from "../../stores";
-import { IconHome, IconProjects, IconRuns, IconActivity, IconAgent, IconSkill, IconSoul, IconShield, IconSettings, IconSearch } from "../shared/icons";
+import { IconHome, IconProjects, IconRuns, IconActivity, IconAgent, IconSkill, IconSoul, IconShield, IconSettings, IconChevron } from "../shared/icons";
 
 const NAV = [
   { group: "Workspace", items: [
@@ -29,6 +30,20 @@ export function Layout(props: { children?: any }) {
   const approvals = useApprovals();
   const attention = () => notifications().filter((n: any) => !n.read).length + approvals().length;
 
+  const toggleCompact = () => setCompact((c) => !c);
+
+  // Ctrl+B / Cmd+B untuk toggle sidebar
+  onMount(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "b") {
+        e.preventDefault();
+        setCompact((c) => !c);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    onCleanup(() => window.removeEventListener("keydown", handler));
+  });
+
   return (
     <div class="shell">
       <aside class={`sidebar ${compact() ? "compact" : ""}`}>
@@ -40,8 +55,8 @@ export function Layout(props: { children?: any }) {
               <div class="sb-sub">Agents</div>
             </div>
           </A>
-          <button class="tb-toggle" onClick={() => setCompact((c) => !c)} title="Toggle (Ctrl+B)" style={{ width: "30px", height: "30px" }}>
-            <IconSearch class="ico-sm" />
+          <button class="tb-toggle" onClick={toggleCompact} title={compact() ? "Buka sidebar (Ctrl+B)" : "Tutup sidebar (Ctrl+B)"} style={{ width: "30px", height: "30px" }}>
+            <IconChevron class="ico-sm" style={{ transform: compact() ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }} />
           </button>
         </div>
         <nav class="sb-nav">
@@ -74,7 +89,7 @@ export function Layout(props: { children?: any }) {
           <div class="tb-crumb"><span class="tb-workspace">Software-Development-Agents</span></div>
           <span class="tb-env">dev</span>
           <div class="tb-spacer" />
-          <span class="mono" style={{ "font-size": "0.72rem", color: "var(--ink-faint)" }}>Hermes-ready · 9router-ready</span>
+          <span class="mono" style={{ "font-size": "0.72rem", color: "var(--ink-faint)" }}>Ctrl+B · sidebar</span>
         </header>
         <main class="content">{props.children}</main>
       </div>

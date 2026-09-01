@@ -6,7 +6,7 @@ import { createSignal, For, Show } from "solid-js";
 import { useParams } from "@solidjs/router";
 import { useExecutions, useExecutionEvents, useSandboxes, useFindings, useWorkReports, useAgents, useSessions, useProject } from "../../stores";
 import { PageHeader, StatusBadge, TimelineProgress } from "../../components/shared";
-import { IconRuns, IconAgent, IconBolt, IconCheck, IconWarning, IconShield, IconSearch } from "../../components/shared/icons";
+import { IconRuns, IconAgent, IconBolt, IconCheck, IconWarning, IconShield } from "../../components/shared/icons";
 import { dbList } from "../../adapters/mock/db";
 
 const CODE = `// src/auth/oauth.service.ts

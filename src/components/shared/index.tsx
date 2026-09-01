@@ -6,7 +6,7 @@ import { createEffect, createSignal, For, Show, onCleanup } from "solid-js";
 import type { JSX } from "solid-js";
 import { useProjects } from "../../stores";
 import {
-  IconCheck, IconBolt, IconClock, IconSpark, IconWarning, IconShield, IconSearch, IconLock,
+  IconCheck, IconBolt, IconClock, IconSpark, IconWarning, IconShield, IconLock,
 } from "./icons";
 
 const STATUS_LABEL: Record<string, string> = {
